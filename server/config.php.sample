@@ -1,0 +1,23 @@
+<?php
+$config = array(
+    "dbDsn"        => "mysql:host=localhost;dbname=tokenexchange",
+    "dbUser"       => "egeniq",
+    "dbPassword"   => "password",
+
+    // For the random token generator. Change to a sufficiently random string.
+    "randomSecret" => "issssdf8sf087fgsg8svojshgs0gf897345sdfvlmh2345",
+
+    // Enter a full path, e.g. /tmp/tx.log to enable logging
+    "logging"      => "",
+
+    // The apps hosted in this tokenechange
+    "apps" => array(
+        "AppId1" => array(
+        ),
+        "AppId2" => array(
+            "tokensize" => 6, // Apps can optionally request shorter 
+                              // notificationTokens if storage is limited, but this is not recommended
+        ),
+
+    ),
+);
