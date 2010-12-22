@@ -6,7 +6,7 @@
  * Edit your project's main Appname-Info.plist file, and add the following entry:
   * Key: TEDeviceTokenExchangeURL
   * Value: The url where you installed the tokenexchange server, INCLUDING the appId you want to use. 
-  Example: http://example.com/tokenexchange/v1?appId=myApp
+  Example: http://example.com/tokenexchange/v1/?appId=myApp
  * Add the following import to your app delegate implementation file:
 {{{
 #import "TokenExchangeClient.h" 
