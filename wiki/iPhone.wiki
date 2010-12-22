@@ -6,11 +6,14 @@
  * Edit your project's main Appname-Info.plist file, and add the following entry:
   * Key: TEDeviceTokenExchangeURL
   * Value: The url where you installed the tokenexchange server, INCLUDING the appId you want to use. 
-  Example: http://example.com/tokenexchange/v1?appId=myApp 
+  Example: http://example.com/tokenexchange/v1?appId=myApp
+ * Add the following import to your app delegate implementation file:
+{{{
+#import "TokenExchangeClient.h" 
+}}}
  * Assuming your app is set up properly to receive push notifications, you must add the following code to your app delegate's didRegisterForRemotenotificationsWithDeviceToken method. This will trigger sending the deviceToken to the service and stores the notificationToken in the user settings:
 
 {{{
-
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         [[TokenExchangeClient sharedInstance] exchangeDeviceToken:deviceToken];
 }
@@ -31,6 +34,14 @@ Just read the notificationToken from the client and use it as you see fit.
 
 = Reading the notificationToken =
 
+When you need the notificationToken, just include the header file:
+
 {{{
-        NSString *token = [TokenExchangeClient sharedInstance].notificationToken;
+#import "TokenExchangeClient.h"
+}}}
+
+and use the following code to retrieve the notificationToken:
+
+{{{
+NSString *token = [TokenExchangeClient sharedInstance].notificationToken;
 }}}
