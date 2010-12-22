@@ -1,9 +1,9 @@
 <?php
 
-mylog(var_export($_REQUEST, true));
-
 require_once("../../Token.php");
 require_once("../../config.php");
+
+mylog(var_export($_REQUEST, true));
 
 if (!isset($_REQUEST["appId"])) {
     echo "appId param required";
