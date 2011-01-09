@@ -54,7 +54,7 @@ class Token
 
     public function create($notificationToken, $deviceToken)
     {
-        $stmt = $this->_db->prepare("insert into token (notificationtoken, devicetoken, appid) values (:nt, :dt, :appid)");
+        $stmt = $this->_db->prepare("insert into token (notificationtoken, devicetoken, appid, created_at) values (:nt, :dt, :appid, now())");
         $stmt->bindParam("nt", $notificationToken);
         $stmt->bindParam("dt", $deviceToken);
         $stmt->bindParam("appid", $this->_appId);
@@ -69,7 +69,7 @@ class Token
     {
         $currentToken = $this->get($notificationToken);
         if ($currentToken!==false) {
-            $stmt = $this->_db->prepare("update token set devicetoken=:dt where notificationtoken=:nt and appid=:appid");
+            $stmt = $this->_db->prepare("update token set devicetoken=:dt, updated_at=now() where notificationtoken=:nt and appid=:appid");
             $stmt->bindParam("nt", $notificationToken);
             $stmt->bindParam("dt", $deviceToken);
             $stmt->bindParam("appid", $this->_appId);
