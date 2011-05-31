@@ -2,6 +2,8 @@
 
 /**
  * A simple client for the Token Exchange. 
+ * Since this is a PHP script the client only supports getting
+ * a deviceToken based on a notificationToken and not viceversa.
  * Note: uses url wrappers.
  */
 class TokenExchangeClient 
@@ -15,6 +17,11 @@ class TokenExchangeClient
         $this->_appId = $appId;
     }
    
+
+    /**
+     * @return String The devicetoken (with an @ and the device family 
+     * appended to it if using a server >=1.1)
+     */
     public function getDeviceToken($notificationToken)
     {
         $url = $this->_tokenExchangeURL."?appId=".$this->_appId;

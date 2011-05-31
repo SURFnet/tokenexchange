@@ -26,6 +26,7 @@ CREATE TABLE `token` (
   `notificationtoken` varchar(255) NOT NULL,
   `devicetoken` varchar(255) NOT NULL,
   `appid` varchar(255) NOT NULL,
+  `devicefamily` varchar(10) NOT NULL,
   `created_at` datetime,
   `updated_at` datetime,
   PRIMARY KEY (`notificationtoken`)

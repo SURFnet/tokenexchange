@@ -1,7 +1,13 @@
 <?php
 
-
 class Token
+{
+    public $deviceToken;
+    public $deviceFamily;
+    public $notificationToken;
+}
+
+class TokenExchange
 {  
     protected $_secret;
     protected $_appId;
@@ -26,38 +32,63 @@ class Token
         return $hash;
     }
 
+    /**  
+     * @param String $notificationToken
+     * @return Token or false
+     */
     public function get($notificationToken)
     {
-        $stmt = $this->_db->prepare("select devicetoken from token where notificationtoken = :nt and appid = :appid");
+        $stmt = $this->_db->prepare("select devicetoken,devicefamily from token 
+                                     where 
+                                        notificationtoken = :nt 
+                                        and appid = :appid");
         $stmt->bindParam("nt", $notificationToken);
         $stmt->bindParam("appid", $this->_appId);
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if (is_array($row) && !empty($row["devicetoken"])) {
-            return $row["devicetoken"];
+            $t = new Token();
+            $t->deviceToken = $row["devicetoken"];  
+            $t->deviceFamily = $row["devicefamily"];
+            $t->notificationToken = $notificationToken;
+            return $t;
         }
         return false;
     }
  
-    public function getByDevice($deviceToken)
+    public function getByDevice($deviceToken, $deviceFamily)
     {
-        $stmt = $this->_db->prepare("select notificationtoken from token where devicetoken = :dt and appid = :appid");
+        $stmt = $this->_db->prepare("select notificationtoken from token 
+                                     where 
+                                        devicetoken = :dt 
+                                        and appid = :appid
+                                        and devicefamily = :devicefamily");
         $stmt->bindParam("dt", $deviceToken);
         $stmt->bindParam("appid", $this->_appId);
+        $stmt->bindParam("devicefamily", $deviceFamily);
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if (is_array($row) && !empty($row["notificationtoken"])) {
-            return $row["notificationtoken"];
+            $t = new Token();
+            $t->deviceToken = $deviceToken;
+            $t->deviceFamily = $deviceFamily;
+            $t->notificationToken = $row["notificationtoken"];
+            return $t;
         }
         return false;
     }
 
-    public function create($notificationToken, $deviceToken)
+    public function create($notificationToken, $deviceToken, $deviceFamily)
     {
-        $stmt = $this->_db->prepare("insert into token (notificationtoken, devicetoken, appid, created_at) values (:nt, :dt, :appid, now())");
+        $stmt = $this->_db->prepare("insert into token 
+                                        (notificationtoken, devicetoken, 
+                                         appid, devicefamily, created_at) 
+                                     values (:nt, :dt, :appid, :devicefamily, now())");
         $stmt->bindParam("nt", $notificationToken);
         $stmt->bindParam("dt", $deviceToken);
         $stmt->bindParam("appid", $this->_appId);
+        $stmt->bindParam("devicefamily", $deviceFamily);
+
         if ($stmt->execute()) {
 //            $this->_db->commit();
             return true;
@@ -69,7 +100,10 @@ class Token
     {
         $currentToken = $this->get($notificationToken);
         if ($currentToken!==false) {
-            $stmt = $this->_db->prepare("update token set devicetoken=:dt, updated_at=now() where notificationtoken=:nt and appid=:appid");
+            $stmt = $this->_db->prepare("update token set devicetoken=:dt, updated_at=now()
+                                         where 
+                                            notificationtoken=:nt 
+                                            and appid=:appid");
             $stmt->bindParam("nt", $notificationToken);
             $stmt->bindParam("dt", $deviceToken);
             $stmt->bindParam("appid", $this->_appId);
