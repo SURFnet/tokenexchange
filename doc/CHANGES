@@ -1,0 +1,10 @@
+1.1
+---
+* Multi device support. Clients should use API /v1.1 to use device support.
+* Added http status codes when performing bad requests.
+* Improved error handling (exceptions now not displayed in output but sent
+  to log file)
+
+1.0
+---
+* Initial version
