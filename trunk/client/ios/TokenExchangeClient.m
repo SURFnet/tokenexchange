@@ -27,7 +27,7 @@ static TokenExchangeClient *sharedInstance = nil;
 	if (escapedNotificationToken == nil) {
 	    body = [NSString stringWithFormat:@"deviceToken=%@&deviceFamily=ios", escapedDeviceToken];	
 	} else {
-	    body = [NSString stringWithFormat:@"deviceToken=%@&notificationToken=%@", escapedDeviceToken, escapedNotificationToken];
+	    body = [NSString stringWithFormat:@"deviceToken=%@&deviceFamily=ios&notificationToken=%@", escapedDeviceToken, escapedNotificationToken];
 	}
 
 	NSString *url = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"TEDeviceTokenExchangeURL"];

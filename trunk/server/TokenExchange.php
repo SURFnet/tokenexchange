@@ -96,7 +96,7 @@ class TokenExchange
         return false;
     }
 
-    public function update($notificationToken, $deviceToken)
+    public function update($notificationToken, $deviceToken, $deviceFamily)
     {
         $currentToken = $this->get($notificationToken);
         if ($currentToken!==false) {
@@ -114,7 +114,7 @@ class TokenExchange
         } else {
             // Getting an update of a token that didn't exist yet.
             $newNotificationToken = $this->uniqueToken(); // generate a valid token to prevent people from posting invalid ids
-            if ($this->create($newNotificationToken, $deviceToken)) {
+            if ($this->create($newNotificationToken, $deviceToken, $deviceFamily)) {
                 return $newNotificationToken;
             }
         }

@@ -27,7 +27,13 @@ $tokenExchange = new TokenExchange($_REQUEST["appId"], $config);
 if (isset($_REQUEST["notificationToken"]) && isset($_REQUEST["deviceToken"])) {
 
     // Update of a Token
-    $result = $tokenExchange->update($_REQUEST["notificationToken"], $_REQUEST["deviceToken"]);
+    if (!isset($_REQUEST["deviceFamily"]) || !in_array($_REQUEST["deviceFamily"], array("ios","android","blackberry"))) {
+        header("HTTP/1.0 400 Bad Request");
+        echo "deviceFamily param required (must be 'ios', 'android' or 'blackberry')";
+        die;
+    }
+
+    $result = $tokenExchange->update($_REQUEST["notificationToken"], $_REQUEST["deviceToken"], $_REQUEST["deviceFamily"]);
     if (is_string($result)) {
         echo $result;
     }
