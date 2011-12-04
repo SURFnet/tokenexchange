@@ -1,12 +1,20 @@
 <?php
 
-require_once("../../TokenExchange.php");
-require_once("../../config.php");
-
+if (defined('TX_CONFIG_LOCATION')) {
+    // We are wrapped inside a script. 
+    // Assume the wrapper has set tx_config_location to the location
+    // of our config file and also has included TokenExchange.php
+    require_once(TX_CONFIG_LOCATION);
+} else {
+    require_once("../../TokenExchange.php");
+    require_once("../../config.php");
+}
 if (!defined('VERSION')) {
     // Not included by older version wrappers.
     define('VERSION', 1.1);
 }
+
+date_default_timezone_set('UTC');
 
 mylog(var_export($_REQUEST, true));
 
