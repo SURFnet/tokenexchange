@@ -77,7 +77,7 @@ if (isset($_REQUEST["notificationToken"]) && isset($_REQUEST["deviceToken"])) {
     if ($nt!=false) {
         $tokenExchange->update($nt->notificationToken, $_REQUEST["deviceToken"]);
         echo $nt->notificationToken;
-        mylog("Created token, but existed, so updated intead");
+        mylog("Created token, but existed, so updated instead");
     } else {
 
         $notificationToken = $tokenExchange->uniqueToken();
